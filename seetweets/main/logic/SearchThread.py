@@ -8,8 +8,9 @@ import time
 from seetweets.main.logic.TwitterPoller import TwitterPoller
 
 class SearchThread(Thread):
-    def __init__(self):
+    def __init__(self, tweetqueue):
         Thread.__init__(self)
+        self.tweetqueue = tweetqueue
         
     def run(self):
         self.searchTweets()
@@ -19,5 +20,6 @@ class SearchThread(Thread):
         
         while 1:
             json = poller.getTwitterSearchJson("suits")
-            poller.getLatestTweet(json)
+            tweet = poller.getLatestTweet(json)
+            self.tweetqueue.put(tweet)
             time.sleep(10) 
