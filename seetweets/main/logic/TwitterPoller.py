@@ -11,13 +11,17 @@ class TwitterPoller():
     def __init__(self):
         print ""
         
-    def searchTwitter(self, hashtag):
-        f = urllib.urlopen("http://search.twitter.com/search.json?q=%40" + hashtag).read()
-        test = json.loads(f)
+    def getTwitterSearchJson(self, hashtag, sinceid = 0):
+        if len(hashtag) < 2: raise Exception("Hashtag was too short!")
         
-        print test
+        getcommand = "http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag
         
-        return "lol"
+        f = urllib.urlopen(getcommand).read()
+        result = json.loads(f)
         
-    def getLatestTweet(self, tweets):
-        print "lol"
+        return result
+        
+    def getLatestTweet(self, tweetsjson):
+        results = tweetsjson['results']
+        
+        print results[0]['text']
