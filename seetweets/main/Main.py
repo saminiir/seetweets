@@ -6,7 +6,6 @@ Created on Jan 22, 2013
 from seetweets.main.gui.MainFrame import MainFrame 
 from Tkinter import *
 from threading import Timer
-from seetweets.main.gui.GUIThread import GUIThread
 from seetweets.main.logic.SearchThread import SearchThread
 
 def hello():

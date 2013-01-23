@@ -5,6 +5,7 @@ Created on Jan 22, 2013
 '''
 from threading import Thread
 import time
+from seetweets.main.logic.TwitterPoller import TwitterPoller
 
 class SearchThread(Thread):
     def __init__(self):
@@ -14,6 +15,9 @@ class SearchThread(Thread):
         self.searchTweets()
         
     def searchTweets(self):
+        poller = TwitterPoller()
+        
         while 1:
-            print "search thread test"
-            time.sleep(5) 
+            json = poller.getTwitterSearchJson("suits")
+            poller.getLatestTweet(json)
+            time.sleep(10) 
