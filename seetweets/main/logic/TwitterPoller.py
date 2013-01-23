@@ -5,6 +5,7 @@ Created on Jan 22, 2013
 '''
 import urllib
 import json
+from seetweets.main.Tweet import Tweet
 
 class TwitterPoller():
     
@@ -21,7 +22,21 @@ class TwitterPoller():
         
         return result
         
+    #===========================================================================
+    # Returns a Tweet-object constructed from a given Twitter-Json 
+    #===========================================================================
     def getLatestTweet(self, tweetsjson):
         results = tweetsjson['results']
         
-        print results[0]['text']
+        if len(results) < 1:
+            return
+
+        result = results[0]
+        
+        time = result['created_at']
+        author = result['from_user_name']
+        text = result['text']
+
+        tweet = Tweet(time, author, text)
+        
+        return tweet
