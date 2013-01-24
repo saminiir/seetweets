@@ -9,7 +9,8 @@ Knows the time, author and content of a tweet
 
 class Tweet():
     
-    def __init__(self, time, author, text):
+    def __init__(self, tid, time, author, text):
+        self.tid = tid
         self.time = time
         self.author = author
         self.text = text

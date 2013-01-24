@@ -9,15 +9,15 @@ from seetweets.main.gui.TweetPopup import TweetPopup
 from Tkinter import *
 
 
-#controller = Controller()
-#controller.invoke()
+controller = Controller()
+controller.invoke()
 
-root = Tk()
-root.resizable(FALSE,FALSE)
+#root = Tk()
+#root.resizable(FALSE,FALSE)
      
-tweet = Tweet("20:07", "@Sami", "lololololololasdsdsdsa awd aw aw aw  aw sr ssrggsgsg s")   
-TweetPopup(tweet)
+#tweet = Tweet("20:07", "@Sami", "lololololololasdsdsdsa awd aw aw aw  aw sr ssrggsgsg s")   
+#TweetPopup(tweet)
         
-root.mainloop()
+#root.mainloop()
 
 
