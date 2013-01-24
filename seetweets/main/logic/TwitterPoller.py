@@ -6,7 +6,7 @@ Created on Jan 22, 2013
 import urllib
 import json
 from seetweets.main.Tweet import Tweet
-from urllib import urlencode
+from urllib import quote_plus
 
 class TwitterPoller():
     
@@ -16,7 +16,7 @@ class TwitterPoller():
     def getTwitterSearchJson(self, hashtag, sinceid = 0):
         if len(hashtag) < 2: raise Exception("Hashtag was too short!")
         
-        getcommand = urlencode("http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag)
+        getcommand = "http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag
         
         f = urllib.urlopen(getcommand).read()
         result = json.loads(f)
@@ -40,7 +40,5 @@ class TwitterPoller():
         text = result['text']
 
         tweet = Tweet(tid, time, author, text)
-        
-        tweet = Tweet(1225215, "20:57", "@Sami", "Testaan vaan etta toimiiko 1234556789 :)")
         
         return tweet

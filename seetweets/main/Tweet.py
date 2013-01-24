@@ -9,11 +9,15 @@ Knows the time, author and content of a tweet
 
 class Tweet():
     
-    def __init__(self, tid, time, author, text):
+    def __init__(self, tid, hashtag, time, author, text):
         self.tid = tid
+        self.hashtag = hashtag
         self.time = time
         self.author = author
         self.text = text
         
-    def persist(self):
-        raise NotImplementedError
+    def persist(self, connection):
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO tweets VALUES (?, ?, ?, ?, ?)", [self.tid, self.hashtag, self.time, self.author, self.text])
+        connection.commit()
+        connection.close()

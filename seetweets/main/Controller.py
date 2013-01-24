@@ -9,14 +9,16 @@ from Tkinter import *
 from seetweets.main.gui.MainFrame import MainFrame
 from seetweets.main.gui.TweetPopup import TweetPopup
 from threading import Timer
+from seetweets.main.database.Database import Database
 
 class Controller():
     
     def __init__(self):
         self.tweetqueue = Queue()
+        self.database = Database()
         
     def invoke(self):
-        searchThread = SearchThread(self.tweetqueue)
+        searchThread = SearchThread(self.tweetqueue, self.database)
         searchThread.start()
         
         root = Tk()
