@@ -19,6 +19,9 @@ class SearchThread(Thread):
         poller = TwitterPoller()
         
         while 1:
+            testjson = '{"results":[{"from_user_name":"Sami", "id":124125, "created_at":"20:57", "text":"Testaan etta toimiiko, 12345678 :-)"'
+                            
+            
             json = poller.getTwitterSearchJson("suits")
             tweet = poller.getLatestTweet(json)
             self.tweetqueue.put(tweet)
