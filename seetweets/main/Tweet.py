@@ -2,9 +2,8 @@
 Created on Jan 23, 2013
 
 A class representing a single tweet.
-Knows the time, author and content of a tweet
 
-@author: sami
+@author: sailniir
 '''
 
 class Tweet():

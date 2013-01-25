@@ -1,6 +1,8 @@
 '''
 Created on Jan 23, 2013
 
+Class for controlling the SeeTweets-application. Handles the view and logic and delegates commands
+
 @author: sailniir
 '''
 from Queue import Queue
@@ -42,7 +44,8 @@ class Controller():
         '''
         tweet = self.pollQueue()
 
-        self.showTweetFor(tweet, 2)
+        if tweet != None:
+            self.showTweetFor(tweet, 2)
 
         #Lets call the function again in X milliseconds                
         root.after(5000, self.showNewTweetIfFound, root)
