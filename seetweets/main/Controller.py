@@ -18,23 +18,55 @@ class Controller():
         self.database = Database()
         
     def invoke(self):
-        searchThread = SearchThread(self.tweetqueue, self.database)
-        searchThread.start()
+        '''
+        Method for starting the controller
+        '''
+        
+        self.searchThread = SearchThread(self.tweetqueue, self.database)
+        self.searchThread.start()
         
         root = Tk()
         root.resizable(FALSE,FALSE)
         
-        root.after(5000, self.pollQueue, root)
+        root.after(5000, self.showNewTweetIfFound, root)
+        
         seetweets = MainFrame("SeeTweets", root) 
+        
+        seetweets.addObserverToHashEntry(self.searchThread.setHashtag, events="hashChanged")
+        
         root.mainloop()
         
-    def pollQueue(self, root):
-        tweet = self.tweetqueue.get()
-        print "text " + tweet.text
-        msg = TweetPopup(tweet)
+    def showNewTweetIfFound(self, root):
+        '''
+        Shows a new tweet as a popup, if found
+        '''
+        tweet = self.pollQueue()
+
+        self.showTweetFor(tweet, 2)
+
+        #Lets call the function again in X milliseconds                
+        root.after(5000, self.showNewTweetIfFound, root)
         
-        timer = Timer(2, msg.destroy)
-        timer.start()
+    def pollQueue(self):
+        '''
+        Method for polling the queue for tweets. Helps with thread-safety
+        '''
+        try:
+            tweet = self.tweetqueue.get(block=False)
+        except (Exception):
+            return
         
         self.tweetqueue.task_done()
-        root.after(5000, self.pollQueue, root)
+        
+        return tweet
+        
+    def showTweetFor(self, tweet, seconds):
+        '''
+        Shows a tweet as a popup for given amount of seconds
+        '''
+        
+        msg = TweetPopup(tweet)
+        
+        timer = Timer(seconds, msg.destroy)
+        timer.start()
+        
