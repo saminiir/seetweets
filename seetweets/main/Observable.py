@@ -1,7 +1,7 @@
 '''
 Created on Jan 25, 2013
 
-Class representing a sender. Implements the Observer-pattern.
+Class representing an observable. Implements the Observer-pattern.
 
 @author: sailniir
 '''
@@ -14,7 +14,7 @@ class Observable():
         
     def addObserver(self, observer, events=None):
         '''
-        Adds an observer to the sender, with optional event-types
+        Adds an observer to the observable, with optional event-types
         '''
         if events is not None and type(events) not in (types.TupleType, types.ListType):
             events = (events,)

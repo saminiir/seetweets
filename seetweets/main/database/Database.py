@@ -36,11 +36,11 @@ class Database():
         
         conn.close()
         
-    def queryRows(self, statement):
+    def queryRows(self, statement, params):
         conn = self.getConnection()
         c = conn.cursor()
         
-        c.execute(statement)
+        c.execute(statement, params)
         conn.commit()
         
         results = c.fetchall()
