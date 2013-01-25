@@ -18,15 +18,18 @@ class TwitterPoller():
         
         getcommand = "http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag
         
+        print getcommand
+        
         f = urllib.urlopen(getcommand).read()
         result = json.loads(f)
         
         return result
         
-    #===========================================================================
-    # Returns a Tweet-object constructed from a given Twitter-Json 
-    #===========================================================================
-    def getLatestTweet(self, tweetsjson):
+    def getLatestTweet(self, tweetsjson, hashtag):
+        '''
+        Returns a Tweet-object constructed from a given Twitter-Json 
+        '''
+        
         results = tweetsjson['results']
         
         if len(results) < 1:
@@ -34,11 +37,13 @@ class TwitterPoller():
 
         result = results[0]
         
+        print results
+        
         tid = result['id']
         time = result['created_at']
         author = result['from_user_name']
         text = result['text']
 
-        tweet = Tweet(tid, time, author, text)
+        tweet = Tweet(tid, hashtag, time, author, text)
         
         return tweet

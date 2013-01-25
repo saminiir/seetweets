@@ -1,7 +1,9 @@
 '''
 Created on Jan 23, 2013
 
-@author: sami
+Class representing the database operations
+
+@author: sailniir
 '''
 import sqlite3
 class Database():
@@ -14,26 +16,39 @@ class Database():
         return sqlite3.connect(self.name + '.db')
 
     def initTables(self):
-        conn = self.getConnection()
-        
-        c = conn.cursor()
-        
-        #c.execute('''DROP TABLE tweets''')
-        
-        c.execute('''CREATE TABLE IF NOT EXISTS tweets
+        self.query('''CREATE TABLE IF NOT EXISTS tweets
                     (tid INT, 
                     hashtag TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
         
-        conn.commit()
-        conn.close()
-        
     def getCount(self, tablename):
-        conn = self.getConnection()
+        #TODO: SQL Inject warning?
+        result = self.query("SELECT COUNT(*) FROM " + (tablename))
         
+        count = result[0][0]
+        return count
+        
+    def query(self, statement):
+        conn = self.getConnection()
         c = conn.cursor()
         
-        c.execute("SELECT COUNT(*) FROM " + (tablename))
+        c.execute(statement)
         conn.commit()
         
-        return c.fetchone()[0]
+        conn.close()
+        
+    def queryRows(self, statement):
+        conn = self.getConnection()
+        c = conn.cursor()
+        
+        c.execute(statement)
+        conn.commit()
+        
+        results = c.fetchall()
+        
+        conn.close()
+        
+        return results
+    
+    def dropTable(self, tablename):
+        self.query("DROP TABLE " + tablename)
         

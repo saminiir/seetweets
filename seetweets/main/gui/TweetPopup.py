@@ -23,7 +23,6 @@ class TweetPopup(Toplevel):
         canvas.pack()
 
         length = len(tweet.text)
-        print len(tweet.text)
         
         textpart1 = tweet.text[:length/2]
         textpart2 = tweet.text[-length/2:]
@@ -37,7 +36,6 @@ class TweetPopup(Toplevel):
         textlength = len(tweet.text)
         
         linecount = textlength / 25
-        print linecount
         
         self.lines = []
         

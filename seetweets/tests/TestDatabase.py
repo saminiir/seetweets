@@ -37,3 +37,7 @@ class TestDatabase(unittest.TestCase):
         testTweet.persist(self.database.getConnection())
         
         self.assertEquals(1, self.database.getCount("tweets"), "The database should have exactly one row!")
+
+        testTweet.persist(self.database.getConnection())
+        
+        self.assertEquals(2, self.database.getCount("tweets"), "The database should have exactly two rows!")
