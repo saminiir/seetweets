@@ -22,7 +22,7 @@ class Database():
         
     def getCount(self, tablename):
         #TODO: SQL Inject warning?
-        result = self.query("SELECT COUNT(*) FROM " + (tablename))
+        result = self.query("SELECT COUNT(*) FROM ?", (tablename))
         
         count = result[0][0]
         return count
@@ -50,5 +50,5 @@ class Database():
         return results
     
     def dropTable(self, tablename):
-        self.query("DROP TABLE " + tablename)
+        self.query("DROP TABLE ?", (tablename))
         

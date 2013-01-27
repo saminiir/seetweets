@@ -1,7 +1,7 @@
 '''
 Created on Jan 22, 2013
 
-@author: sami
+@author: sailniir
 '''
 import unittest
 from seetweets.main.logic.TwitterPoller import TwitterPoller
@@ -22,3 +22,7 @@ class TestTwitterPolling(unittest.TestCase):
         twitterPoller = TwitterPoller()
         
         queryinvalidJson = '{"error":"Invalid query"}'
+        
+        result = twitterPoller.getLatestTweet(queryinvalidJson, "test")
+        
+        self.assertEquals(result, None, "There should be no Tweet returned!")
