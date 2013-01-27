@@ -28,6 +28,10 @@ class SearchThread(Thread, Observable):
         while 1:
             time.sleep(10) 
             
+            if len(self.hashtag) > 139:
+                self.notifyObservers("statusChanged", "Too long hashtag!")
+                continue
+            
             if len(self.hashtag) > 0:
                 tid = self.getLatestTweetId(self.hashtag)
                 
@@ -43,7 +47,7 @@ class SearchThread(Thread, Observable):
                     continue
                     
                 if tweet != None:
-                    self.notifyObservers("statusChanged", "Found tweets!")
+                    self.notifyObservers("statusChanged", "Found tweets! Showing..")
                     self.tweetqueue.put(tweet)
                     tweet.persist(self.database.getConnection())
             else:

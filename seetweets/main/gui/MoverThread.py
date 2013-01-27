@@ -3,26 +3,41 @@ Created on Jan 27, 2013
 
 @author: sailniir
 '''
-from threading import Thread
+from threading import Thread, Timer
+import time
 
 class MoverThread(Thread):
     
     def __init__(self, element, seconds):
         Thread.__init__(self)
         self.element = element
-        print "mover"
+        self.seconds = seconds
         
     def run(self):
         self.running = True
         
-        x = 100
-        y = 100
+        x = self.element.winfo_screenwidth()
+        y = 250
+        
+        width = self.element.width
+        
+        border = x - width
+        
+        timer = Timer(self.seconds, self.stop)
+        timer.start()
+        
+        tick = 0
         
         while self.running:
-            print "moving"
-            self.element.geometry("%dx%d+%d+%d" % (300, 100, x, y))
-            x += 0.2
+            tick += 1
+            self.element.geometry("%dx%d+%d+%d" % (width, 100, x, y))
             
+            if (x > border):
+                x -= 2
+            
+            time.sleep(0.01)
+        
+        self.element.destroy()
             
     def stop(self):
         self.running = False

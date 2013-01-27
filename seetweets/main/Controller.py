@@ -50,7 +50,7 @@ class Controller():
         tweet = self.pollQueue()
 
         if tweet != None:
-            self.showTweetFor(tweet, 5)
+            self.showTweetFor(tweet, 8)
 
         #Lets call the function again in X milliseconds                
         root.after(5000, self.showNewTweetIfFound, root)
