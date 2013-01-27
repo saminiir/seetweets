@@ -8,7 +8,7 @@ Class for accessing the Twitter API
 import urllib
 import json
 from seetweets.main.Tweet import Tweet
-from urllib import quote_plus
+from urllib import quote_plus, urlencode
 import logging
 
 class TwitterPoller():
@@ -19,8 +19,11 @@ class TwitterPoller():
     def getTwitterSearchJson(self, hashtag, sinceid = 0):
         if len(hashtag) < 2: raise Exception("Hashtag was too short!")
         
+        params = urlencode({'since_id' : sinceid, 'q' : hashtag})
         #TODO: url encoding!
-        getcommand = "http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag
+        getcommand = "http://search.twitter.com/search.json?%s" % params
+        
+        print getcommand
         
         f = urllib.urlopen(getcommand).read()
         result = json.loads(f)
