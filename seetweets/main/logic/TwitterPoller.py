@@ -1,12 +1,15 @@
 '''
 Created on Jan 22, 2013
 
-@author: sami
+Class for accessing the Twitter API
+
+@author: sailniir
 '''
 import urllib
 import json
 from seetweets.main.Tweet import Tweet
 from urllib import quote_plus
+import logging
 
 class TwitterPoller():
     
@@ -16,12 +19,18 @@ class TwitterPoller():
     def getTwitterSearchJson(self, hashtag, sinceid = 0):
         if len(hashtag) < 2: raise Exception("Hashtag was too short!")
         
+        #TODO: url encoding!
         getcommand = "http://search.twitter.com/search.json?since_id=" + str(sinceid) + "&q=%40" + hashtag
-        
-        print getcommand
         
         f = urllib.urlopen(getcommand).read()
         result = json.loads(f)
+        
+        if "error" in result:
+            raise Exception(result['error'])
+        
+        if "results" in result:
+            if sinceid == 0 and len(result['results']) < 1:
+                raise Exception("No tweets with this hashtag!")
         
         return result
         
@@ -32,12 +41,12 @@ class TwitterPoller():
         
         results = tweetsjson['results']
         
+        logging.info(results)
+        
         if len(results) < 1:
-            return
+            raise Exception("No new tweets!")
 
         result = results[0]
-        
-        print results
         
         tid = result['id']
         time = result['created_at']

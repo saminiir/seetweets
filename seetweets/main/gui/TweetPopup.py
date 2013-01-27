@@ -29,6 +29,7 @@ class TweetPopup(Toplevel):
         
         canvas.create_text(100, 25, text=textpart1)
         canvas.create_text(100, 50, text=textpart2)
+        
         self.popupimg = PhotoImage(file="tweetpopup2.gif")
 #        canvas.create_image(100, 25, image=self.popupimg, tags="img")
 

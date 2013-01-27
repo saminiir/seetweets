@@ -1,16 +1,20 @@
 '''
 Created on Jan 22, 2013
 
-@author: sami
+Worker thread for querying tweets with Twitter API
+
+@author: sailniir
 '''
 from threading import Thread
 import time
 from seetweets.main.logic.TwitterPoller import TwitterPoller
 from seetweets.main.Tweet import Tweet
+from seetweets.main.Observable import Observable
 
-class SearchThread(Thread):
+class SearchThread(Thread, Observable):
     def __init__(self, tweetqueue, database):
         Thread.__init__(self)
+        Observable.__init__(self)
         self.tweetqueue = tweetqueue
         self.database = database
         self.hashtag = ""
@@ -22,32 +26,28 @@ class SearchThread(Thread):
         poller = TwitterPoller()
         
         while 1:
+            time.sleep(10) 
+            
             if len(self.hashtag) > 0:
-                print self.hashtag
-                
                 tid = self.getLatestTweetId(self.hashtag)
                 
-                print tid
-    
                 hashtag = self.hashtag
     
-                print "hashtag is: " + hashtag
+                self.notifyObservers("statusChanged", "Searching tweets..")
     
-                json = poller.getTwitterSearchJson(hashtag, tid)
-                tweet = poller.getLatestTweet(json, hashtag)
-                
+                try:
+                    json = poller.getTwitterSearchJson(hashtag, tid)
+                    tweet = poller.getLatestTweet(json, hashtag)
+                except Exception as e:
+                    self.notifyObservers("statusChanged", e.args[0])
+                    continue
+                    
                 if tweet != None:
+                    self.notifyObservers("statusChanged", "Found tweets!")
                     self.tweetqueue.put(tweet)
                     tweet.persist(self.database.getConnection())
-    
-    #            self.database.dropTable("tweets")
-    #            self.database.initTables()
-    
-               # tweet = Tweet(tid=1225215, hashtag="suits", time="20:57", author="@Sami", text="Testaan vaan etta toimiiko 1234556789 :)")
-
-            time.sleep(10) 
-
-
+            else:
+                self.notifyObservers("statusChanged", "Give a hashtag!")
 
     def getLatestTweetId(self, hashtag):
         result = self.database.queryRows("SELECT MAX(tid) FROM tweets WHERE hashtag = ?", [hashtag])

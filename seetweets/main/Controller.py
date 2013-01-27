@@ -12,6 +12,7 @@ from seetweets.main.gui.MainFrame import MainFrame
 from seetweets.main.gui.TweetPopup import TweetPopup
 from threading import Timer
 from seetweets.main.database.Database import Database
+from seetweets.main.gui.MoverThread import MoverThread
 
 class Controller():
     
@@ -25,7 +26,6 @@ class Controller():
         '''
         
         self.searchThread = SearchThread(self.tweetqueue, self.database)
-        self.searchThread.start()
         
         root = Tk()
         root.resizable(FALSE,FALSE)
@@ -34,8 +34,13 @@ class Controller():
         
         seetweets = MainFrame("SeeTweets", root) 
         
+        self.searchThread.addObserver(seetweets.handleException, events="exception")
+        self.searchThread.addObserver(seetweets.statusChanged, events="statusChanged")
+        
+        #TODO: addObserverToElement ?
         seetweets.addObserverToHashEntry(self.searchThread.setHashtag, events="hashChanged")
         
+        self.searchThread.start()
         root.mainloop()
         
     def showNewTweetIfFound(self, root):
@@ -45,7 +50,7 @@ class Controller():
         tweet = self.pollQueue()
 
         if tweet != None:
-            self.showTweetFor(tweet, 2)
+            self.showTweetFor(tweet, 5)
 
         #Lets call the function again in X milliseconds                
         root.after(5000, self.showNewTweetIfFound, root)
@@ -70,6 +75,11 @@ class Controller():
         
         msg = TweetPopup(tweet)
         
-        timer = Timer(seconds, msg.destroy)
-        timer.start()
+        mover = MoverThread(msg, seconds).start()
+        
+        print "starting timer!"
+#        msg.geometry("%dx%d+%d+%d" % (300, 100, 300, 300))
+        
+    #    timer = Timer(seconds, mover.stop)
+     #   timer.start()
         
