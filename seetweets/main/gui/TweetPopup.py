@@ -16,10 +16,12 @@ class TweetPopup(Toplevel):
         self.wm_overrideredirect(True)
         self.lines = []
         
+        self.width = 300
+        self.height = 48
+        
         lines = self.processText(tweet.text)
         
-        self.width = 300
-        self.height = 100
+
         
         self.geometry("%dx%d+%d+%d" % (self.width, self.height, 100, 100))
         self.wm_attributes("-alpha", 0.7)
@@ -28,19 +30,10 @@ class TweetPopup(Toplevel):
         
         self.createLayout(canvas)
         
-        length = len(tweet.text)
-        
         author = tweet.author
-        canvas.create_text(80, 13, text="@" + author, fill="white")
+        canvas.create_text(30, 6, text="@" + author, fill="white", anchor=NW)
         
         self.renderText(canvas, lines)
-       # textpart1 = tweet.text[:length/2]
-       # textpart2 = tweet.text[-length/2:]
-        
-       # canvas.create_text(100, 50, text=textpart1)
-       # canvas.create_text(100, 75, text=textpart2)
-        
-#        canvas.create_image(100, 25, image=self.popupimg, tags="img")
 
     def createLayout(self, canvas):
         canvas.create_rectangle(0, 0, self.width, self.height, fill="white")
@@ -49,7 +42,7 @@ class TweetPopup(Toplevel):
         canvas.create_image(12.5, 12.5, image=self.twitterbird, tags="img")
     
     def renderText(self, canvas, lines):
-        linespace = 25
+        linespace = 17
         y = 35
         for line in lines:
             canvas.create_text(10, y, text=line, anchor=NW)
@@ -62,10 +55,6 @@ class TweetPopup(Toplevel):
         
         textlength = len(text)
         
-        linecount = textlength / 25
-        
-        print "text length: " + str(textlength) + ", linecount: " + str(linecount)
-        
         lines = []
         
         j = 0
@@ -73,7 +62,7 @@ class TweetPopup(Toplevel):
         threshold = 40
         linecount = textlength / threshold
         
-        for i in range(linecount):
+        for i in range(linecount+1):
             end = (i+1)*threshold
             
             if end > textlength:
@@ -81,6 +70,7 @@ class TweetPopup(Toplevel):
             
             line = text[i*threshold:end]
             lines.append(line)
+            self.height += 15
             
         
         #for i in range(textlength):

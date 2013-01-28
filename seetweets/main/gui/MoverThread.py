@@ -20,6 +20,7 @@ class MoverThread(Thread):
         y = 250
         
         width = self.element.width
+        height = self.element.height
         
         border = x - width
         
@@ -30,10 +31,10 @@ class MoverThread(Thread):
         
         while self.running:
             tick += 1
-            self.element.geometry("%dx%d+%d+%d" % (width, 100, x, y))
+            self.element.geometry("%dx%d+%d+%d" % (width, height, x, y))
             
             if (x > border):
-                x -= 2
+                x -= 3
             
             time.sleep(0.01)
         
