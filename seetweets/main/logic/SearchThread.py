@@ -7,9 +7,8 @@ Worker thread for querying tweets with Twitter API
 '''
 from threading import Thread
 import time
-from seetweets.main.logic.TwitterPoller import TwitterPoller
-from seetweets.main.Tweet import Tweet
-from seetweets.main.Observable import Observable
+from TwitterPoller import TwitterPoller
+from ..Observable import Observable
 
 class SearchThread(Thread, Observable):
     def __init__(self, tweetqueue, database):
@@ -27,7 +26,9 @@ class SearchThread(Thread, Observable):
         
         self.delay = 0
         
-        while True:
+        self.running = True
+        
+        while self.running:
             if not(self.isValid(self.hashtag)) or self.interrupted: continue
             
             if self.delay > 0:
@@ -80,4 +81,7 @@ class SearchThread(Thread, Observable):
             self.hashtag = msg
             self.delay = 3
             self.interrupted = False
+            
+    def stop(self):
+        self.running = False
         

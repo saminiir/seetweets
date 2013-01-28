@@ -11,13 +11,13 @@ import sys
 sys.path.append("/home/sami/sami/code/seetweets/seetweets/main/")
 
 from Queue import Queue
-from seetweets.main.logic.SearchThread import SearchThread
+from logic.SearchThread import SearchThread
 from Tkinter import *
-from seetweets.main.gui.MainFrame import MainFrame
-from seetweets.main.gui.TweetPopup import TweetPopup
+from gui.MainFrame import MainFrame
+from gui.TweetPopup import TweetPopup
 from threading import Timer
-from seetweets.main.database.Database import Database
-from seetweets.main.gui.MoverThread import MoverThread
+from database.Database import Database
+from gui.MoverThread import MoverThread
 
 class Controller():
     
@@ -32,12 +32,12 @@ class Controller():
         
         self.searchThread = SearchThread(self.tweetqueue, self.database)
         
-        root = Tk()
-        root.resizable(FALSE,FALSE)
+        self.root = Tk()
+        self.root.resizable(FALSE,FALSE)
         
-        root.after(5000, self.showNewTweetIfFound, root)
+        self.root.after(5000, self.showNewTweetIfFound, self.root)
         
-        seetweets = MainFrame("SeeTweets", root) 
+        seetweets = MainFrame("SeeTweets", self.root) 
         
         self.searchThread.addObserver(seetweets.handleException, events="exception")
         self.searchThread.addObserver(seetweets.statusChanged, events="statusChanged")
@@ -45,8 +45,10 @@ class Controller():
         #TODO: addObserverToElement ?
         seetweets.addObserverToHashEntry(self.searchThread.setHashtag, events="hashChanged")
         
+        self.root.protocol("WM_DELETE_WINDOW", self.safelyExitApplication)
+        
         self.searchThread.start()
-        root.mainloop()
+        self.root.mainloop()
         
     def showNewTweetIfFound(self, root):
         '''
@@ -83,6 +85,12 @@ class Controller():
         mover = MoverThread(msg, seconds).start()
         
         print "starting timer!"
+        
+    def safelyExitApplication(self):
+        self.searchThread.stop()
+        self.root.destroy()
+        self.root.quit()
+
 #        msg.geometry("%dx%d+%d+%d" % (300, 100, 300, 300))
         
     #    timer = Timer(seconds, mover.stop)
