@@ -7,7 +7,7 @@ Class for accessing the Twitter API
 '''
 import urllib
 import json
-from seetweets.main.Tweet import Tweet
+from ..Tweet import Tweet
 from urllib import quote_plus, urlencode
 import logging
 

@@ -38,7 +38,7 @@ class TweetPopup(Toplevel):
     def createLayout(self, canvas):
         canvas.create_rectangle(0, 0, self.width, self.height, fill="white")
         canvas.create_rectangle(0, 0, self.width, 25, fill="black")
-        self.twitterbird = PhotoImage(file="twitterbird2.gif")
+        self.twitterbird = PhotoImage(file="twitterbird.gif")
         canvas.create_image(12.5, 12.5, image=self.twitterbird, tags="img")
     
     def renderText(self, canvas, lines):
