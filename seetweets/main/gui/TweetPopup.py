@@ -45,8 +45,12 @@ class TweetPopup(Toplevel):
         linespace = 17
         y = 35
         for line in lines:
-            logging.debug(line)
-            canvas.create_text(10, y, text=line.strip(), anchor=NW)
+            try:
+                canvas.create_text(10, y, text=line.strip(), anchor=NW)
+            except ValueError:
+                #Yeah this is bad coding! But the try-clause was a quick fix to the
+                #crashes caused by exotic chars
+                logging.warn("Tweet text had illegal character! " + line)
             y += linespace
 
     def splitTextToLines(self, text, lastindex, threshold):
