@@ -34,7 +34,7 @@ from Tkinter import Tk, Frame
 from main.Tweet import Tweet
 from main.gui.TweetPopup import TweetPopup
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 controller = Controller()
 controller.invoke()
