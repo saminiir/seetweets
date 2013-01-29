@@ -7,6 +7,7 @@ Class representing a popup showing the tweet message
 '''
 from Tkinter import Toplevel, Canvas, PhotoImage
 from Tkconstants import NW
+import logging
 
 class TweetPopup(Toplevel):
     
@@ -44,6 +45,7 @@ class TweetPopup(Toplevel):
         linespace = 17
         y = 35
         for line in lines:
+            logging.debug(line)
             canvas.create_text(10, y, text=line.strip(), anchor=NW)
             y += linespace
 

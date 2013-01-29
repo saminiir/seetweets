@@ -7,6 +7,7 @@ Main frame for the SeeTweets application. Handles the widgets
 '''
 from Tkinter import *
 from HashInput import HashInput
+import logging
 
 class MainFrame(Frame):
     
@@ -38,12 +39,12 @@ class MainFrame(Frame):
     def statusChanged(self, sender, event, msg):
         if event == "statusChanged":
             self.statuslabel["text"] = msg
-            print "msg: " + msg
+            logging.debug("msg: " + msg)
         
     def handleException(self, sender, event, msg):
         if event == "exception":
             self.showException(msg)
             
     def showException(self, msg):
-        print "msg: " + str(msg.args)
+        logging.debug("msg: " + str(msg.args))
         

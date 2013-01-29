@@ -21,7 +21,6 @@ class Database():
                     hashtag TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
         
     def getCount(self, tablename):
-        #TODO: SQL Inject warning?
         result = self.query("SELECT COUNT(*) FROM ?", (tablename))
         
         count = result[0][0]

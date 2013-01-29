@@ -86,17 +86,11 @@ class Controller():
         
         self.mover = MoverThread(msg, seconds).start()
         
-        print "starting timer!"
-        
     def safelyExitApplication(self):
         self.searchThread.stop()
         if not self.mover is None: self.mover.stop()
         self.root.destroy()
-        #self.root.quit()
+        
         print "Thanks for using SeeTweets!"
         sys.exit()
-#        msg.geometry("%dx%d+%d+%d" % (300, 100, 300, 300))
-        
-    #    timer = Timer(seconds, mover.stop)
-     #   timer.start()
         

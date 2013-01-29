@@ -9,6 +9,7 @@ from threading import Thread
 import time
 from TwitterPoller import TwitterPoller
 from ..Observable import Observable
+import logging
 
 class SearchThread(Thread, Observable):
     def __init__(self, tweetqueue, database):
@@ -53,6 +54,7 @@ class SearchThread(Thread, Observable):
                     continue
                 
                 if tweet is not None:
+                    logging.debug(tweet.text)
                     self.notifyObservers("statusChanged", "Found tweets! Showing..")
                     self.tweetqueue.put(tweet)
                     tweet.persist(self.database.getConnection())
