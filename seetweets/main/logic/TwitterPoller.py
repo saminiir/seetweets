@@ -44,7 +44,7 @@ class TwitterPoller():
         
         results = tweetsjson['results']
         
-        logging.info(results)
+        logging.debug(results)
         
         if len(results) < 1:
             return None
@@ -55,6 +55,9 @@ class TwitterPoller():
         time = result['created_at']
         author = result['from_user_name']
         text = result['text']
+        
+        logging.debug("TWEET TEXT: " + text)
+        
 
         tweet = Tweet(tid, hashtag, time, author, text)
         

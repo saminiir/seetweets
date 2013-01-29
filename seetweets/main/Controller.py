@@ -5,20 +5,13 @@ Class for controlling the SeeTweets-application. Handles the view and logic and 
 
 @author: sailniir
 '''
-import os
-import sys
-#sys.path.append(os.path.join(os.path.dirname(__file__)))
-sys.path.append("/home/sami/sami/code/seetweets/seetweets/main/")
-
 from Queue import Queue
 from logic.SearchThread import SearchThread
 from Tkinter import *
 from gui.MainFrame import MainFrame
 from gui.TweetPopup import TweetPopup
-from threading import Timer
 from database.Database import Database
 from gui.MoverThread import MoverThread
-import sys
 
 class Controller():
     

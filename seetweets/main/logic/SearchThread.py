@@ -26,19 +26,22 @@ class SearchThread(Thread, Observable):
         poller = TwitterPoller()
         
         self.delay = 0
+        waitTime = 0
         
         self.running = True
         
         while self.running:
             if not(self.isValid(self.hashtag)) or self.interrupted: continue
             
+            
             if self.delay > 0:
                 self.notifyObservers("statusChanged", "Searching in " + str(self.delay) + " seconds..")
                 self.delay -= 1
                 time.sleep(1)
+                waitTime = 0
                 continue
             
-            if self.isValid(self.hashtag):
+            if self.isValid(self.hashtag) and waitTime < 1:
                 tid = self.getLatestTweetId(self.hashtag)
                 
                 hashtag = self.hashtag
@@ -61,9 +64,20 @@ class SearchThread(Thread, Observable):
                 else:
                     self.notifyObservers("statusChanged", "No new tweets!")
                 
-            time.sleep(10)
+                waitTime = 10
+                
+            if waitTime > 0:
+                time.sleep(1)
+                waitTime -= 1
+                self.notifyObservers("statusChanged", "Searching again in " + str(waitTime) + "..")
+                continue
+                
+            
 
     def getLatestTweetId(self, hashtag):
+        '''
+        Returns the latest tweet's id from db. If not found, returns zero.
+        '''
         result = self.database.queryRows("SELECT MAX(tid) FROM tweets WHERE hashtag = ?", [hashtag])
         
         if result == None or result[0][0] == None:
