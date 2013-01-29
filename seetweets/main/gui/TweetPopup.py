@@ -13,7 +13,6 @@ class TweetPopup(Toplevel):
     def __init__(self, tweet):
         Toplevel.__init__(self)
         self.wm_attributes("-topmost", 1)
-        self.focus()
         self.tweet = tweet
         self.wm_overrideredirect(True)
         self.lines = []
@@ -21,11 +20,10 @@ class TweetPopup(Toplevel):
         self.width = 300
         self.height = 48
         
-        lines = self.splitTextToLines(tweet.text, lastindex = 40, threshold = 10)
+        lines = self.splitTextToLines(tweet.text, lastindex = 40, threshold = 8)
         self.addLinesToHeight(lines)
         
         self.geometry("%dx%d+%d+%d" % (self.width, self.height, 200, 200))
-        #self.wm_attributes("-alpha", 0.7)
         canvas = Canvas(self, borderwidth=0, relief="sunken")
         canvas.pack()
         
@@ -52,6 +50,7 @@ class TweetPopup(Toplevel):
     def splitTextToLines(self, text, lastindex, threshold):
         '''
         Splits the tweet text for changing popup size 
+        TODO: The tweetpopup probably shouldn't "know" this functionality
         '''
         
         lines = []
@@ -61,7 +60,7 @@ class TweetPopup(Toplevel):
         #Optional threshold variable, that forces cut if no whitespace
         #found in given amount of traversal (threshold)
         while len(text) > 0:
-            if (len(text) < lastindex):
+            if (len(text) <= lastindex):
                 lines.append(text)
                 break
             
@@ -70,18 +69,19 @@ class TweetPopup(Toplevel):
             
             #TODO: Refactor!
             for i in range(threshold):
-                left -= 1
-                right += 1
-                if text[left] == ' ':
+                if left >= 0 and text[left] == ' ':
                     text = self.appendLineAndReturnTrailing(lines, left, text)
                     break
-                elif text[right] == ' ':
+                elif right < len(text) and text[right] == ' ':
                     text = self.appendLineAndReturnTrailing(lines, right, text)
                     break
-                
+                 
                 #If we got here on the last round, force line cut
                 if i + 1 == threshold:
                     text = self.appendLineAndReturnTrailing(lines, lastindex, text)
+                    
+                left -= 1
+                right += 1
                 
         return lines
     

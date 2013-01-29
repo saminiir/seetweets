@@ -47,7 +47,7 @@ class TwitterPoller():
         logging.info(results)
         
         if len(results) < 1:
-            raise Exception("No new tweets!")
+            return None
 
         result = results[0]
         

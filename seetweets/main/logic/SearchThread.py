@@ -51,10 +51,13 @@ class SearchThread(Thread, Observable):
                     self.notifyObservers("statusChanged", e.args[0])
                     self.interrupted = True
                     continue
-                    
-                self.notifyObservers("statusChanged", "Found tweets! Showing..")
-                self.tweetqueue.put(tweet)
-                tweet.persist(self.database.getConnection())
+                
+                if tweet is not None:
+                    self.notifyObservers("statusChanged", "Found tweets! Showing..")
+                    self.tweetqueue.put(tweet)
+                    tweet.persist(self.database.getConnection())
+                else:
+                    self.notifyObservers("statusChanged", "No new tweets!")
                 
             time.sleep(10)
 
