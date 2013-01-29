@@ -67,6 +67,8 @@ class SearchThread(Thread, Observable):
         return result[0][0]
     
     def isValid(self, hashtag):
+        time.sleep(0.5)
+        
         if len(hashtag) > 139:
             self.notifyObservers("statusChanged", "Too long hashtag!")
             return False

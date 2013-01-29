@@ -1,10 +1,12 @@
 '''
 Created on Jan 22, 2013
 
+Main frame for the SeeTweets application. Handles the widgets
+
 @author: sailniir
 '''
 from Tkinter import *
-from seetweets.main.gui.HashInput import HashInput
+from HashInput import HashInput
 
 class MainFrame(Frame):
     

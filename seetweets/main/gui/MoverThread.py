@@ -1,6 +1,8 @@
 '''
 Created on Jan 27, 2013
 
+A custom thread for moving a widget on the screen
+
 @author: sailniir
 '''
 from threading import Thread, Timer
