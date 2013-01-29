@@ -23,7 +23,7 @@ class TwitterPoller():
         #TODO: url encoding!
         getcommand = "http://search.twitter.com/search.json?%s" % params
         
-        print getcommand
+        logging.debug(getcommand)
         
         f = urllib.urlopen(getcommand).read()
         result = json.loads(f)

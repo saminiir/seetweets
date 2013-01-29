@@ -23,6 +23,7 @@ Main class for the SeeTweets-application
 
 import sys
 import os
+import logging
 
 
 path = os.path.join(os.path.dirname(__file__), "..")
@@ -32,6 +33,8 @@ from main.Controller import Controller
 from Tkinter import Tk, Frame
 from main.Tweet import Tweet
 from main.gui.TweetPopup import TweetPopup
+
+logging.basicConfig(level=logging.DEBUG)
 
 controller = Controller()
 controller.invoke()
