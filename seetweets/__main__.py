@@ -24,29 +24,29 @@ Main class for the SeeTweets-application
 import sys
 import os
 
+
 path = os.path.join(os.path.dirname(__file__), "..")
-#print path
 sys.path.append(os.path.join(os.path.dirname(__file__), path))
-#sys.path.append("/home/sami/sami/code/seetweets/seetweets/main/")
 
 from main.Controller import Controller
-from Tkinter import Tk
+from Tkinter import Tk, Frame
+from main.Tweet import Tweet
+from main.gui.TweetPopup import TweetPopup
 
 
-controller = Controller()
-controller.invoke()
+#controller = Controller()
+#controller.invoke()
 
-#root = Tk()
-
-#text = "testaan etta toimiiko taa mitenkaa jarkevastia sease aädasäsdä awddaw aägeägegäa easä gaä äs äafsä asäfasäf aes eas faes feas"
-#text = "test"
+root = Tk()
 #text = "Keskipitunen teksti, jossa suomalaisiakin aakkasia jonkin verran :-)"
+text = "Testailen tätä TweetPopuppia sikapitkillälauseillajotkavoisivatrikkoaxxxxxxxxxxxxxxxxx toiminnallisuuden"
 
+frame = Frame(root)
 #print len(text)
 
-#tweet = Tweet(tid=124512, hashtag="lollero", time="16:25", author="Sami Niiranen", text=text)
+tweet = Tweet(tid=124512, hashtag="lollero", time="16:25", author="Sami Niiranen", text=text)
 
-#popup = TweetPopup(tweet)
+popup = TweetPopup(tweet)
 
-#root.mainloop()
+root.mainloop()
 

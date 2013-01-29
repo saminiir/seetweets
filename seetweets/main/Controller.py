@@ -18,6 +18,7 @@ from gui.TweetPopup import TweetPopup
 from threading import Timer
 from database.Database import Database
 from gui.MoverThread import MoverThread
+import sys
 
 class Controller():
     
@@ -31,6 +32,7 @@ class Controller():
         '''
         
         self.searchThread = SearchThread(self.tweetqueue, self.database)
+        self.mover = None
         
         self.root = Tk()
         self.root.resizable(FALSE,FALSE)
@@ -82,15 +84,17 @@ class Controller():
         
         msg = TweetPopup(tweet)
         
-        mover = MoverThread(msg, seconds).start()
+        self.mover = MoverThread(msg, seconds).start()
         
         print "starting timer!"
         
     def safelyExitApplication(self):
         self.searchThread.stop()
+        if not self.mover is None: self.mover.stop()
         self.root.destroy()
-        self.root.quit()
-
+        #self.root.quit()
+        print "Thanks for using SeeTweets!"
+        sys.exit()
 #        msg.geometry("%dx%d+%d+%d" % (300, 100, 300, 300))
         
     #    timer = Timer(seconds, mover.stop)

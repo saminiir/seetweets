@@ -1,10 +1,12 @@
 '''
 Created on Jan 22, 2013
 
-@author: sami
+Custom component for the hash input field
+
+@author: sailniir
 '''
 from Tkinter import Entry, StringVar
-from seetweets.main.Observable import Observable
+from ..Observable import Observable
 
 class HashInput(Entry, Observable):
     
@@ -17,5 +19,7 @@ class HashInput(Entry, Observable):
         Entry.__init__(self, master, textvariable = hashText)
         
     def textChanged(self, sv):
+        '''
+        Raises a text changed -event
+        ''' 
         self.notifyObservers('hashChanged', sv.get())
-        print sv.get()
