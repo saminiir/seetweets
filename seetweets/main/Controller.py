@@ -38,11 +38,12 @@ class Controller():
         self.searchThread.addObserver(seetweets.statusChanged, events="statusChanged")
         
         #TODO: addObserverToElement ?
-        seetweets.addObserverToHashEntry(self.searchThread.setHashtag, events="hashChanged")
+        seetweets.addObserverToHashEntry(self.searchThread.setQuery, events="queryChanged")
         
         self.root.protocol("WM_DELETE_WINDOW", self.safelyExitApplication)
         
         self.searchThread.start()
+        
         self.root.mainloop()
         
     def showNewTweetIfFound(self, root):

@@ -18,15 +18,18 @@ class Database():
     def initTables(self):
         self.query('''CREATE TABLE IF NOT EXISTS tweets
                     (tid INT, 
-                    hashtag TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
+                    query TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
         
     def getCount(self, tablename):
-        result = self.query("SELECT COUNT(*) FROM ?", (tablename))
+        result = self.queryRows("SELECT COUNT(*) FROM (?)", [tablename])
         
         count = result[0][0]
         return count
         
     def query(self, statement):
+        '''
+        Executes an SQL-query against the database
+        '''
         conn = self.getConnection()
         c = conn.cursor()
         
@@ -36,6 +39,9 @@ class Database():
         conn.close()
         
     def queryRows(self, statement, params):
+        '''
+        Executes an SQL-query against the database and returns results
+        '''
         conn = self.getConnection()
         c = conn.cursor()
         

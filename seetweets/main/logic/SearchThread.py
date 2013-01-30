@@ -17,7 +17,7 @@ class SearchThread(Thread, Observable):
         Observable.__init__(self)
         self.tweetqueue = tweetqueue
         self.database = database
-        self.hashtag = ""
+        self.query = ""
         
     def run(self):
         self.searchTweets()
@@ -31,45 +31,45 @@ class SearchThread(Thread, Observable):
         self.running = True
         
         while self.running:
-            if not(self.isValid(self.hashtag)) or self.interrupted: continue
+            if not(self.isValid(self.query)) or self.interrupted: continue
             
             
             if self.delay > 0:
-                self.notifyObservers("statusChanged", "Searching in " + str(self.delay) + " seconds..")
+                self.notify("statusChanged", "Searching in " + str(self.delay) + " seconds..")
                 self.delay -= 1
                 time.sleep(1)
                 waitTime = 0
                 continue
             
-            if self.isValid(self.hashtag) and waitTime < 1:
-                tid = self.getLatestTweetId(self.hashtag)
+            if self.isValid(self.query) and waitTime < 1:
+                tid = self.getLatestTweetId(self.query)
                 
-                hashtag = self.hashtag
+                query = self.query
     
-                self.notifyObservers("statusChanged", "Searching tweets..")
+                self.notify("statusChanged", "Searching tweets..")
     
                 try:
-                    json = poller.getTwitterSearchJson(hashtag, tid)
-                    tweet = poller.getLatestTweet(json, hashtag)
+                    json = poller.getTwitterSearchJson(query, tid)
+                    tweet = poller.getLatestTweet(json, query)
                 except Exception as e:
-                    self.notifyObservers("statusChanged", e.args[0])
+                    self.notify("statusChanged", e.args[0])
                     self.interrupted = True
                     continue
                 
                 if tweet is not None:
                     logging.debug(tweet.text)
-                    self.notifyObservers("statusChanged", "Found tweets! Showing..")
+                    self.notify("statusChanged", "Found tweets! Showing..")
                     self.tweetqueue.put(tweet)
                     tweet.persist(self.database.getConnection())
                 else:
-                    self.notifyObservers("statusChanged", "No new tweets!")
+                    self.notify("statusChanged", "No new tweets!")
                 
                 waitTime = 10
                 
             if waitTime > 0:
                 time.sleep(1)
                 waitTime -= 1
-                self.notifyObservers("statusChanged", "Searching again in " + str(waitTime) + "..")
+                self.notify("statusChanged", "Searching again in " + str(waitTime) + "..")
                 continue
                 
             
@@ -89,19 +89,22 @@ class SearchThread(Thread, Observable):
         time.sleep(0.5)
         
         if len(hashtag) > 139:
-            self.notifyObservers("statusChanged", "Too long hashtag!")
+            self.notify("statusChanged", "Too long query!")
             return False
         if len(hashtag) < 1:
-            self.notifyObservers("statusChanged", "Give a hashtag!")
+            self.notify("statusChanged", "Give a query!")
             return False
         
         return True
     
-    def setHashtag(self, sender, event, msg):
-        if event == "hashChanged":
-            self.hashtag = msg
-            self.delay = 3
-            self.interrupted = False
+    def setQuery(self, sender, event, msg):
+        self.query = msg
+        self.delay = 3
+        self.interrupted = False
+        
+    def notify(self, events, msg=None):
+        if self.running:
+            self.notifyObservers(events, msg)
             
     def stop(self):
         self.running = False

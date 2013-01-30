@@ -1,7 +1,7 @@
 '''
 Created on Jan 23, 2013
 
-Class representing a popup showing the tweet message 
+Class representing a popup showing a tweet message 
 
 @author: sailniir
 '''
@@ -38,8 +38,16 @@ class TweetPopup(Toplevel):
     def createLayout(self, canvas):
         canvas.create_rectangle(0, 0, self.width, self.height, fill="white")
         canvas.create_rectangle(0, 0, self.width, 25, fill="black")
-        self.twitterbird = PhotoImage(file="twitterbird.gif")
-        canvas.create_image(12.5, 12.5, image=self.twitterbird, tags="img")
+        
+        self.twitterbird = None
+        
+        try:
+            self.twitterbird = PhotoImage(file="twitterbird.gif")
+        except Exception:
+            logging.warn("Twitterbird image could not be loaded!")
+            
+        if self.twitterbird is not None:
+            canvas.create_image(12.5, 12.5, image=self.twitterbird, tags="img")
     
     def renderText(self, canvas, lines):
         linespace = 17

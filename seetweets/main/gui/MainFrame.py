@@ -36,11 +36,6 @@ class MainFrame(Frame):
         menubar = Menu(self.master, tearoff=0, bd=1)
         self.master.config(menu=menubar)
         
-        filemenu = Menu(menubar, tearoff=0)
-        #filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=self.master.quit)
-        menubar.add_cascade(label="File", menu=filemenu)
-        
         helpMenu = Menu(menubar, tearoff=0)
         helpMenu.add_command(label="Twitter Search API", command=lambda url="https://dev.twitter.com/docs/using-search":self.openBrowser(url))
         helpMenu.add_command(label="About", command=self.showAboutMenu)
@@ -48,28 +43,22 @@ class MainFrame(Frame):
         
     def addObserverToHashEntry(self, observer, events=None):
         '''
-        TODO: needs refactoring
+        TODO: needs refactoring: addObserverToElement?
         '''
         self.hashentry.addObserver(observer, events)
         
     def statusChanged(self, sender, event, msg):
-        if event == "statusChanged":
-            self.statuslabel["text"] = msg
-            logging.debug("msg: " + msg)
+        self.statuslabel["text"] = msg
+        logging.debug("msg: " + msg)
         
     def handleException(self, sender, event, msg):
-        if event == "exception":
-            self.showException(msg)
+        self.showException(msg)
             
-    def showException(self, msg):
-        logging.debug("msg: " + str(msg.args))
-        
     def showAboutMenu(self):
         top = Toplevel(height=500)
         top.title("About SeeTweets")
-
         
-        msg = Message(top, text="SeeTweets is an application for displaying Twitter-tweets with the given criteria.\n\nUses Twitter's Search API.\n\nMade by Sami Niiranen")
+        msg = Message(top, text="SeeTweets is an application for displaying Twitter-tweets with the given keywords.\n\nUses Twitter's Search API.\n\nMade by Sami Niiranen")
         msg['pady'] = 20
         msg.pack()
         
