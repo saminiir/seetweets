@@ -27,3 +27,11 @@ Raspbian 2012-12-16
 Features to come:
 -Enable copying of tweets and linking of hashtags
 -Better customizing of the tweet popup by the user
+
+License
+===
+
+This project is licensed under an MIT license.
+http://www.opensource.org/licenses/mit-license.php
+
+Copyright © 2013 Sami Niiranen zamzum@gmail.com

@@ -15,9 +15,6 @@ class MainFrame(Frame):
     def createWidgets(self):
         self.query = Label(self, text="Query:")
         self.query.grid(row=0, column=0, sticky=W, padx=5, pady=2)
-        #self.API = Button(self, text="API")
-        #self.API["command"] = self.openBrowser("https://dev.twitter.com/docs/using-search")
-        #self.API.grid(row=0, column=0, sticky=W, padx=2, pady=2)
         
         self.hashentry = HashInput(self)
         self.hashentry['width'] = 20
