@@ -24,13 +24,13 @@ class TestDatabase(unittest.TestCase):
         
         c.execute('''CREATE TABLE IF NOT EXISTS tweets
                     (tid INT, 
-                    hashtag TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
+                    query TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
         
         conn.commit()
         conn.close()
     
     def testSave(self):
-        testTweet = Tweet(tid=12215, hashtag="test", time="20:57", author="@Sami", text="test case test case test case")
+        testTweet = Tweet(tid=12215, query="test", time="20:57", author="@Sami", text="test case test case test case")
         
         self.assertEquals(0, self.database.getCount("tweets"), "The database should be empty!")
         

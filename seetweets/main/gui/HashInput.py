@@ -22,4 +22,4 @@ class HashInput(Entry, Observable):
         '''
         Raises a text changed -event
         ''' 
-        self.notifyObservers('hashChanged', sv.get())
+        self.notifyObservers('queryChanged', sv.get())

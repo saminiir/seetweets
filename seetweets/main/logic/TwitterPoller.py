@@ -8,19 +8,18 @@ Class for accessing the Twitter API
 import urllib
 import json
 from ..Tweet import Tweet
-from urllib import quote_plus, urlencode
+from urllib import urlencode
 import logging
 
 class TwitterPoller():
     
-    def __init__(self):
-        print ""
+    def getTwitterSearchJson(self, query, sinceid = 0):
+        '''
+        Queries the Twitter Search API with given query.
+        '''
+        if len(query) < 2: raise Exception("Query was too short!")
         
-    def getTwitterSearchJson(self, hashtag, sinceid = 0):
-        if len(hashtag) < 2: raise Exception("Hashtag was too short!")
-        
-        params = urlencode({'since_id' : sinceid, 'q' : hashtag})
-        #TODO: url encoding!
+        params = urlencode({'since_id' : sinceid, 'q' : query})
         getcommand = "http://search.twitter.com/search.json?%s" % params
         
         logging.debug(getcommand)
@@ -33,15 +32,17 @@ class TwitterPoller():
         
         if "results" in result:
             if sinceid == 0 and len(result['results']) < 1:
-                raise Exception("No tweets with this hashtag!")
+                raise Exception("No tweets with this query!")
         
         return result
         
-    def getLatestTweet(self, tweetsjson, hashtag):
+    def getLatestTweet(self, tweetsjson, query):
         '''
         Returns a Tweet-object constructed from a given Twitter-Json 
         '''
         
+        if 'results' not in tweetsjson:
+            return
         results = tweetsjson['results']
         
         logging.debug(results)
@@ -57,8 +58,7 @@ class TwitterPoller():
         text = result['text']
         
         logging.debug("TWEET TEXT: " + text)
-        
 
-        tweet = Tweet(tid, hashtag, time, author, text)
+        tweet = Tweet(tid, query, time, author, text)
         
         return tweet

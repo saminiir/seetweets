@@ -1,7 +1,8 @@
 '''
 Created on Jan 27, 2013
 
-A custom thread for moving a widget on the screen
+A custom thread for moving a widget on the screen.
+Currently only knows how to slide the element in to view from the right.
 
 @author: sailniir
 '''
@@ -16,9 +17,14 @@ class MoverThread(Thread):
         self.seconds = seconds
         
     def run(self):
+        '''
+        The main threaded algorithm for moving the GUI-element
+        '''
         self.running = True
         
         x = self.element.winfo_screenwidth()
+        
+        #These values could be read from a config file or preferences menu
         y = 250
         
         width = self.element.width

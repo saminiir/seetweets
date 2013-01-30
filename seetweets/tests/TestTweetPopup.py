@@ -34,4 +34,4 @@ class TestTweetPopup(unittest.TestCase):
         return lines
         
     def createTweet(self, text):
-        return Tweet(tid=12345, hashtag="test", author="tester", time="12:00", text=text)
+        return Tweet(tid=12345, query="test", author="tester", time="12:00", text=text)
