@@ -21,7 +21,7 @@ class TweetPopup(Toplevel):
         self.width = 300
         self.height = 48
         
-        lines = self.splitTextToLines(tweet.text, lastindex = 40, threshold = 8)
+        lines = self.splitTextToLines(tweet.text, lastindex = 30, threshold = 8)
         self.addLinesToHeight(lines)
         
         self.geometry("%dx%d+%d+%d" % (self.width, self.height, 200, 200))
@@ -50,11 +50,13 @@ class TweetPopup(Toplevel):
             canvas.create_image(12.5, 12.5, image=self.twitterbird, tags="img")
     
     def renderText(self, canvas, lines):
-        linespace = 17
+        linespace = 20
         y = 35
+        font1 = ('times', 13)
+        
         for line in lines:
             try:
-                canvas.create_text(10, y, text=line.strip(), anchor=NW)
+                canvas.create_text(10, y, text=line.strip(), anchor=NW, font=font1)
             except ValueError:
                 #Yeah this is bad coding! But the try-clause was a quick fix to the
                 #crashes caused by exotic chars
@@ -105,4 +107,4 @@ class TweetPopup(Toplevel):
     
     def addLinesToHeight(self, lines):
         for i in range(len(lines)):
-            self.height += 15
+            self.height += 20
