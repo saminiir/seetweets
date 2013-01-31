@@ -21,7 +21,9 @@ class Database():
                     query TEXT, time TIMESTAMP, author TEXT, text TEXT)''')
         
     def getCount(self, tablename):
-        result = self.queryRows("SELECT COUNT(*) FROM (?)", [tablename])
+        #SQL Inject warning! Can't use bindings with table names, so should at
+        #least sanitize the input string
+        result = self.queryRows("SELECT COUNT(*) FROM " + tablename)
         
         count = result[0][0]
         return count
@@ -38,14 +40,18 @@ class Database():
         
         conn.close()
         
-    def queryRows(self, statement, params):
+    def queryRows(self, statement, params=None):
         '''
         Executes an SQL-query against the database and returns results
         '''
         conn = self.getConnection()
         c = conn.cursor()
         
-        c.execute(statement, params)
+        if (params == None):
+            c.execute(statement)
+        else:
+            c.execute(statement, params)
+            
         conn.commit()
         
         results = c.fetchall()
@@ -55,5 +61,5 @@ class Database():
         return results
     
     def dropTable(self, tablename):
-        self.query("DROP TABLE ?", (tablename))
+        self.query("DROP TABLE " + tablename)
         

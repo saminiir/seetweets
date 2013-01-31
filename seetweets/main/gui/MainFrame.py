@@ -1,7 +1,7 @@
 '''
 Created on Jan 22, 2013
 
-Main frame for the SeeTweets application. Handles the widgets
+Main frame for the SeeTweets application. Handles the widgets and creates the layout
 
 @author: sailniir
 '''

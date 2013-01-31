@@ -6,8 +6,8 @@ Unit tests for database
 @author: sailniir
 '''
 import unittest
-from seetweets.main.database.Database import Database
-from seetweets.main.Tweet import Tweet
+from ..main.database.Database import Database
+from ..main.Tweet import Tweet
 class TestDatabase(unittest.TestCase):
     
     def setUp(self):
