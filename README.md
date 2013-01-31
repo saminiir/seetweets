@@ -18,15 +18,14 @@ About
 ===
 Developed with Python 2.7.3, Ubuntu 12.04 LTS and Eclipse PyDev.
 
-Made purely for educational purposes - Although I haven't decided on the license yet, it'll be "free" software.
-
 Tested with:
 Ubuntu 12.04 LTS
 Raspbian 2012-12-16
 
 Features to come:
--Enable copying of tweets and linking of hashtags
--Better customizing of the tweet popup by the user
+1. Enable copying of tweets and linking of hashtags
+2. Customizing of the tweet popup by the user
+3. Documentation
 
 License
 ===

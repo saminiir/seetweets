@@ -6,6 +6,8 @@ Class representing the database operations
 @author: sailniir
 '''
 import sqlite3
+import logging
+import sys
 class Database():
     
     def __init__(self, name="tweets"):
@@ -13,7 +15,12 @@ class Database():
         self.initTables()
     
     def getConnection(self):
-        return sqlite3.connect(self.name + '.db')
+        try:
+            conn = sqlite3.connect(self.name + '.db')
+            return conn
+        except sqlite3.OperationalError:
+            logging.error("Could not open connection to database! Do you have sufficient privileges in the folder?")
+            sys.exit()
 
     def initTables(self):
         self.query('''CREATE TABLE IF NOT EXISTS tweets

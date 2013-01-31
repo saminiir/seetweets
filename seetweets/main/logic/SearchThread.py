@@ -74,24 +74,24 @@ class SearchThread(Thread, Observable):
                 
             
 
-    def getLatestTweetId(self, hashtag):
+    def getLatestTweetId(self, query):
         '''
         Returns the latest tweet's id from db. If not found, returns zero.
         '''
-        result = self.database.queryRows("SELECT MAX(tid) FROM tweets WHERE hashtag = ?", [hashtag])
+        result = self.database.queryRows("SELECT MAX(tid) FROM tweets WHERE query = ?", [query])
         
         if result == None or result[0][0] == None:
             return 0
         
         return result[0][0]
     
-    def isValid(self, hashtag):
+    def isValid(self, query):
         time.sleep(0.5)
         
-        if len(hashtag) > 139:
+        if len(query) > 139:
             self.notify("statusChanged", "Too long query!")
             return False
-        if len(hashtag) < 1:
+        if len(query) < 1:
             self.notify("statusChanged", "Give a query!")
             return False
         
